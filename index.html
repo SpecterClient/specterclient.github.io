@@ -8,10 +8,24 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
         
         body { 
-            background: #060608 url('bg.jpg') no-repeat center center/cover; 
+            /* Ставим твою картинку на фон, центрируем её и растягиваем на весь экран */
+            background: url('bg.jpg') no-repeat center center fixed; 
+            background-size: cover;
             color: #fff; 
             min-height: 100vh;
             overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Затемняющий слой поверх картинки + фиолетовое свечение, чтобы сайт выглядел атмосферно */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(180deg, rgba(6, 6, 8, 0.6) 0%, rgba(6, 6, 8, 0.85) 100%),
+                        radial-gradient(circle at center, rgba(160, 32, 240, 0.15) 0%, transparent 60%);
+            z-index: 1;
+            pointer-events: none;
         }
 
         /* Шапка сайта (Header) */
@@ -20,54 +34,74 @@
             justify-content: space-between;
             align-items: center;
             padding: 20px 40px;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(10px);
+            background: rgba(6, 6, 8, 0.5);
+            backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            z-index: 10;
         }
-        .logo { font-weight: 800; font-size: 1.2rem; letter-spacing: 1px; }
-        .logo span { background: #a020f0; color: #fff; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; margin-left: 5px; vertical-align: middle; }
+        .logo { font-weight: 800; font-size: 1.4rem; letter-spacing: 1.5px; background: linear-gradient(45deg, #fff, #b5b5c3); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .logo span { background: #a020f0; -webkit-text-fill-color: #fff; color: #fff; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; margin-left: 8px; vertical-align: middle; box-shadow: 0 0 10px rgba(160,32,240,0.5); }
         .nav-right { display: flex; align-items: center; gap: 25px; }
-        .nav-link { color: #b5b5c3; text-decoration: none; font-size: 0.9rem; transition: 0.3s; }
-        .nav-link:hover { color: #fff; }
-        .btn-auth { background: #a020f0; color: #fff; padding: 8px 18px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.9rem; box-shadow: 0 0 15px rgba(160,32,240,0.4); }
+        .nav-link { color: #b5b5c3; text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: 0.3s; }
+        .nav-link:hover { color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
+        .btn-auth { background: #a020f0; color: #fff; padding: 10px 22px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.95rem; box-shadow: 0 0 20px rgba(160,32,240,0.5); transition: 0.3s; }
+        .btn-auth:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(160,32,240,0.8); }
 
-        /* Главный контент */
+        /* Главный контейнер */
         .main-container {
             display: flex;
             max-width: 1200px;
-            margin: 80px auto padding;
+            margin: 10% auto 0 auto;
             padding: 0 40px;
             justify-content: space-between;
             align-items: center;
+            position: relative;
+            z-index: 10;
         }
 
         /* Левая часть: Текст и кнопки */
-        .info-block { max-width: 500px; }
-        .info-block h2 { font-size: 2.5rem; margin-bottom: 15px; font-weight: 700; }
-        .info-block p { color: #b5b5c3; line-height: 1.6; margin-bottom: 30px; font-size: 1.05rem; }
+        .info-block { max-width: 550px; }
+        .info-block h2 { font-size: 3rem; margin-bottom: 20px; font-weight: 800; letter-spacing: 1px; }
+        .info-block p { color: #b5b5c3; line-height: 1.7; margin-bottom: 35px; font-size: 1.1rem; }
         .btn-group { display: flex; gap: 15px; }
-        .btn-buy { background: #a020f0; color: #fff; padding: 12px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; box-shadow: 0 0 20px rgba(160,32,240,0.5); }
-        .btn-more { background: rgba(255,255,255,0.05); color: #fff; padding: 12px 28px; border-radius: 8px; text-decoration: none; border: 1px solid rgba(255,255,255,0.1); }
+        .btn-buy { background: #a020f0; color: #fff; padding: 14px 35px; border-radius: 10px; text-decoration: none; font-weight: 600; font-size: 1.05rem; box-shadow: 0 0 25px rgba(160,32,240,0.5); transition: 0.3s; }
+        .btn-buy:hover { transform: translateY(-3px); box-shadow: 0 0 35px rgba(160,32,240,0.8); }
+        .btn-more { background: rgba(255,255,255,0.03); color: #fff; padding: 14px 35px; border-radius: 10px; text-decoration: none; font-weight: 500; font-size: 1.05rem; border: 1px solid rgba(255,255,255,0.08); transition: 0.3s; backdrop-filter: blur(5px); }
+        .btn-more:hover { background: rgba(255,255,255,0.08); transform: translateY(-2px); }
 
-        /* Правая часть: Сетки преимуществ */
+        /* Правая часть: Блоки преимуществ */
         .features-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-            width: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 420px;
         }
         .card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(160, 32, 240, 0.2);
-            padding: 20px;
-            border-radius: 12px;
-            backdrop-filter: blur(5px);
-            position: relative;
-            transition: 0.3s;
+            background: rgba(6, 6, 8, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 22px;
+            border-radius: 16px;
+            backdrop-filter: blur(8px);
+            transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .card:hover { transform: translateY(-5px); border-color: #a020f0; box-shadow: 0 0 20px rgba(160,32,240,0.2); }
-        .card-title { font-weight: 700; margin-bottom: 5px; color: #fff; }
-        .card-desc { color: #8a8a98; font-size: 0.85rem; }
+        .card:hover { 
+            transform: translateX(-10px); 
+            border-color: rgba(160, 32, 240, 0.5); 
+            box-shadow: 0 10px 30px rgba(160,32,240,0.15); 
+            background: rgba(160, 32, 240, 0.03);
+        }
+        .card-title { font-weight: 700; font-size: 1.1rem; margin-bottom: 6px; color: #fff; display: flex; align-items: center; gap: 8px; }
+        .card-title span { color: #a020f0; }
+        .card-desc { color: #8a8a98; font-size: 0.9rem; line-height: 1.4; }
+
+        /* Адаптивность под телефоны */
+        @media (max-width: 968px) {
+            .main-container { flex-direction: column; text-align: center; margin-top: 50px; gap: 50px; }
+            .btn-group { justify-content: center; }
+            .features-grid { width: 100%; }
+            .card:hover { transform: translateY(-5px); }
+        }
     </style>
 </head>
 <body>
@@ -77,9 +111,9 @@
         <div class="logo">SPECTER <span>1.16.5</span></div>
         <div class="nav-right">
             <a href="#" class="nav-link">Русский ▾</a>
-            <a href="#" class="nav-link">Поддержка</a>
-            <a href="ССЫЛКА_НА_ОПЛАТУ" class="nav-link">Купить</a>
-            <a href="ССЫЛКА_НА_ЛИЧНЫЙ_КАБИНЕТ" class="btn-auth">⚡ Авторизация</a>
+            <a href="ССЫЛКА_НА_ПОДДЕРЖКУ" class="nav-link">Поддержка</a>
+            <a href="ССЫЛКА_НА_СКАЧИВАНИЕ" class="nav-link">Купить</a>
+            <a href="ССЫЛКА_НА_ДИСКОРД_ИЛИ_ВХОД" class="btn-auth">Авторизация</a>
         </div>
     </header>
 
@@ -88,26 +122,26 @@
         <!-- Текст слева -->
         <div class="info-block">
             <h2>О нас</h2>
-            <p>Мы предоставляем вам лучший клиент для комфортной игры, который даст вам наилучшие впечатления от игры на любых серверах и анархиях.</p>
+            <p>Мы предоставляем вам лучший клиент для комфортной игры, который даст вам наилучшие впечатления от игры. Обходи новые античиты, доминируй на анархиях и побеждай в любых замесах.</p>
             <div class="btn-group">
-                <a href="ССЫЛКА_НА_СКАЧИВАНИЕ_ИЛИ_ПОКУПКУ" class="btn-buy">🛒 Купить</a>
-                <a href="#" class="btn-more">Подробнее ➔</a>
+                <a href="ССЫЛКА_НА_СКАЧИВАНИЕ" class="btn-buy">🛒 Купить</a>
+                <a href="ССЫЛКА_НА_ДИСКОРД" class="btn-more">Подробнее ➔</a>
             </div>
         </div>
 
         <!-- Карточки справа -->
         <div class="features-grid">
             <div class="card">
-                <div class="card-title">⚡ Полный контроль</div>
-                <div class="card-desc">Полная власть над игровым процессом в любых ситуациях.</div>
+                <div class="card-title"><span>✦</span> Полный контроль</div>
+                <div class="card-desc">Полная власть над игровым процессом и гибкие настройки под любые ситуации.</div>
             </div>
             <div class="card">
-                <div class="card-title">🔥 Лучшая оптимизация</div>
-                <div class="card-desc">Стабильный FPS без просадок даже при жестких замесах.</div>
+                <div class="card-title"><span>✦</span> Лучшая оптимизация</div>
+                <div class="card-desc">Стабильный и высокий FPS без просадок даже во время тяжелых визуальных эффектов.</div>
             </div>
             <div class="card">
-                <div class="card-title">🔮 Обширный функционал</div>
-                <div class="card-desc">Десятки обходов, кастомизация HUD и гибкие настройки.</div>
+                <div class="card-title"><span>✦</span> Обширный функционал</div>
+                <div class="card-desc">Десятки актуальных обходов (Matrix, AAC, Vulcan), кастомизация HUD и удобные бинды.</div>
             </div>
         </div>
     </div>
