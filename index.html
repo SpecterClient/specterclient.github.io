@@ -3,33 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SpecterClient | Minecraft Cheat</title>
+    <title>SpecterClient | Полноценный контроль</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background: #08080c; color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; position: relative; }
-        body::before { content: ''; position: absolute; width: 300px; height: 300px; background: rgba(138, 43, 226, 0.2); filter: blur(100px); top: 10%; left: 15%; }
-        body::after { content: ''; position: absolute; width: 300px; height: 300px; background: rgba(0, 191, 255, 0.15); filter: blur(100px); bottom: 10%; right: 15%; }
-        .container { text-align: center; z-index: 10; background: rgba(255, 255, 255, 0.03); padding: 50px 60px; border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); box-shadow: 0 20px 50px rgba(0,0,0,0.5); max-width: 550px; }
-        h1 { font-size: 3.5rem; font-weight: 800; letter-spacing: 2px; background: linear-gradient(45deg, #a020f0, #00bfff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; filter: drop-shadow(0 0 15px rgba(160,32,240,0.5)); }
-        p { color: #8a8a98; font-size: 1.1rem; margin-bottom: 35px; line-height: 1.6; }
-        .features { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 35px; text-align: left; }
-        .feat-item { background: rgba(255,255,255,0.02); padding: 12px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.03); font-size: 0.95rem; color: #cdcdde; }
-        .feat-item span { color: #00bfff; margin-right: 5px; }
-        .btn { display: inline-block; width: 100%; padding: 16px; background: linear-gradient(90deg, #a020f0, #00bfff); color: #fff; text-decoration: none; border-radius: 12px; font-weight: bold; font-size: 1.1rem; box-shadow: 0 0 25px rgba(160,32,240,0.4); transition: 0.3s ease; }
-        .btn:hover { transform: translateY(-3px); box-shadow: 0 0 35px rgba(0,191,255,0.6); }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
+        
+        body { 
+            background: #060608 url('bg.jpg') no-repeat center center/cover; 
+            color: #fff; 
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Шапка сайта (Header) */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .logo { font-weight: 800; font-size: 1.2rem; letter-spacing: 1px; }
+        .logo span { background: #a020f0; color: #fff; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; margin-left: 5px; vertical-align: middle; }
+        .nav-right { display: flex; align-items: center; gap: 25px; }
+        .nav-link { color: #b5b5c3; text-decoration: none; font-size: 0.9rem; transition: 0.3s; }
+        .nav-link:hover { color: #fff; }
+        .btn-auth { background: #a020f0; color: #fff; padding: 8px 18px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.9rem; box-shadow: 0 0 15px rgba(160,32,240,0.4); }
+
+        /* Главный контент */
+        .main-container {
+            display: flex;
+            max-width: 1200px;
+            margin: 80px auto padding;
+            padding: 0 40px;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Левая часть: Текст и кнопки */
+        .info-block { max-width: 500px; }
+        .info-block h2 { font-size: 2.5rem; margin-bottom: 15px; font-weight: 700; }
+        .info-block p { color: #b5b5c3; line-height: 1.6; margin-bottom: 30px; font-size: 1.05rem; }
+        .btn-group { display: flex; gap: 15px; }
+        .btn-buy { background: #a020f0; color: #fff; padding: 12px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; box-shadow: 0 0 20px rgba(160,32,240,0.5); }
+        .btn-more { background: rgba(255,255,255,0.05); color: #fff; padding: 12px 28px; border-radius: 8px; text-decoration: none; border: 1px solid rgba(255,255,255,0.1); }
+
+        /* Правая часть: Сетки преимуществ */
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            width: 400px;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(160, 32, 240, 0.2);
+            padding: 20px;
+            border-radius: 12px;
+            backdrop-filter: blur(5px);
+            position: relative;
+            transition: 0.3s;
+        }
+        .card:hover { transform: translateY(-5px); border-color: #a020f0; box-shadow: 0 0 20px rgba(160,32,240,0.2); }
+        .card-title { font-weight: 700; margin-bottom: 5px; color: #fff; }
+        .card-desc { color: #8a8a98; font-size: 0.85rem; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>SPECTER</h1>
-        <p>Премиальный чит-клиент для игры на гриферских серверах и анархий Minecraft. Обходи новые античиты, доминируй и побеждай.</p>
-        <div class="features">
-            <div class="feat-item"><span>✦</span> Killaura / TargetHUD</div>
-            <div class="feat-item"><span>✦</span> NoRender / ESP Glow</div>
-            <div class="feat-item"><span>✦</span> Flight / Matrix Speed</div>
-            <div class="feat-item"><span>✦</span> AutoTotem / Inventory</div>
+
+    <!-- Шапка сайта -->
+    <header>
+        <div class="logo">SPECTER <span>1.16.5</span></div>
+        <div class="nav-right">
+            <a href="#" class="nav-link">Русский ▾</a>
+            <a href="#" class="nav-link">Поддержка</a>
+            <a href="ССЫЛКА_НА_ОПЛАТУ" class="nav-link">Купить</a>
+            <a href="ССЫЛКА_НА_ЛИЧНЫЙ_КАБИНЕТ" class="btn-auth">⚡ Авторизация</a>
         </div>
-        <a href="ССЫЛКА_НА_СКАЧИВАНИЕ" class="btn">Скачать клиент</a>
+    </header>
+
+    <!-- Главный блок -->
+    <div class="main-container">
+        <!-- Текст слева -->
+        <div class="info-block">
+            <h2>О нас</h2>
+            <p>Мы предоставляем вам лучший клиент для комфортной игры, который даст вам наилучшие впечатления от игры на любых серверах и анархиях.</p>
+            <div class="btn-group">
+                <a href="ССЫЛКА_НА_СКАЧИВАНИЕ_ИЛИ_ПОКУПКУ" class="btn-buy">🛒 Купить</a>
+                <a href="#" class="btn-more">Подробнее ➔</a>
+            </div>
+        </div>
+
+        <!-- Карточки справа -->
+        <div class="features-grid">
+            <div class="card">
+                <div class="card-title">⚡ Полный контроль</div>
+                <div class="card-desc">Полная власть над игровым процессом в любых ситуациях.</div>
+            </div>
+            <div class="card">
+                <div class="card-title">🔥 Лучшая оптимизация</div>
+                <div class="card-desc">Стабильный FPS без просадок даже при жестких замесах.</div>
+            </div>
+            <div class="card">
+                <div class="card-title">🔮 Обширный функционал</div>
+                <div class="card-desc">Десятки обходов, кастомизация HUD и гибкие настройки.</div>
+            </div>
+        </div>
     </div>
+
 </body>
 </html>
