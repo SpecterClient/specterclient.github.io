@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SpecterClient | Полноценный контроль</title>
+    <!-- Подключаем библиотеку EmailJS для отправки писем с кодом -->
+    <script type="text/javascript" src="https://jsdelivr.net"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
         
@@ -43,8 +45,9 @@
         .nav-right { display: flex; align-items: center; gap: 25px; }
         .nav-link { color: #b5b5c3; text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: 0.3s; }
         .nav-link:hover { color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
-        .btn-auth { background: #a020f0; color: #fff; padding: 10px 22px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.95rem; box-shadow: 0 0 20px rgba(160,32,240,0.5); transition: 0.3s; }
-        .btn-auth:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(160,32,240,0.8); }
+        
+        .btn-auth { background: #a020f0; color: #fff; padding: 10px 22px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.95rem; box-shadow: 0 0 20px rgba(160,32,240,0.5); transition: 0.3s; border: none; cursor: pointer; }
+        .btn-auth:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(160, 32, 240, 0.8); }
 
         /* Главный контейнер */
         .main-container {
@@ -55,7 +58,6 @@
             z-index: 10;
         }
 
-        /* Левый блок с текстом */
         .info-block { max-width: 540px; background: rgba(6, 6, 8, 0.45); padding: 40px; border-radius: 24px; border: 1px solid rgba(255,255,255,0.03); backdrop-filter: blur(6px); }
         .info-block h2 { font-size: 3.5rem; margin-bottom: 20px; font-weight: 800; letter-spacing: 1px; }
         .info-block p { color: #cdcdde; line-height: 1.7; margin-bottom: 35px; font-size: 1.1rem; }
@@ -66,77 +68,6 @@
         .btn-more { background: rgba(255,255,255,0.03); color: #fff; padding: 14px 35px; border-radius: 10px; text-decoration: none; font-weight: 500; font-size: 1.05rem; border: 1px solid rgba(255,255,255,0.08); transition: 0.3s; backdrop-filter: blur(5px); }
         .btn-more:hover { background: rgba(255,255,255,0.08); transform: translateY(-2px); }
 
-        @media (max-width: 768px) {
-            .main-container { text-align: center; margin-top: 20%; padding: 0 20px; }
-            .info-block { margin: 0 auto; padding: 25px; }
-            .info-block h2 { font-size: 2.8rem; }
-            .btn-group { justify-content: center; }
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Шапка сайта -->
-    <header>
-        <div class="logo">SPECTER <span>1.16.5</span></div>
-        <div class="nav-right">
-            <a href="#" class="nav-link">Русский ▾</a>
-            <a href="https://t.me/specterhelper_bot" target="_blank" class="nav-link">Поддержка</a>
-            <a href="#" class="nav-link">Купить</a>
-            <a href="#" class="btn-auth">Авторизация</a>
-        </div>
-    </header>
-
-    <!-- Главный блок -->
-    <div class="main-container">
-        <div class="info-block">
-            <h2>О нас</h2>
-            <p>Мы предоставляем вам лучший client для комфортной игры, который даст вам наилучшие впечатления от игры на любых серверах и анархиях.</p>
-            <div class="btn-group">
-                <a href="#" class="btn-buy">🛒 Купить</a>
-                <a href="#" class="btn-more">Подробнее ➔</a>
-            </div>
-        </div>
-    </div>
-
-</body>
-</html>
-    <!-- ОКНО АВТОРИЗАЦИИ (ШАГ 1) -->
-    <div class="modal-overlay" id="authModal">
-        <div class="modal-window">
-            <button class="modal-close" id="closeAuthBtn">&times;</button>
-            <h3 id="modalTitle">Вход в аккаунт</h3>
-            
-            <!-- Форма ввода Почты и Пароля -->
-            <form id="loginForm">
-                <div class="input-group">
-                    <label>Электронная почта (Email)</label>
-                    <input type="email" id="userEmail" placeholder="example@mail.ru" required>
-                </div>
-                
-                <div class="input-group">
-                    <label>Пароль</label>
-                    <input type="password" placeholder="••••••••" required>
-                </div>
-                
-                <button type="submit" class="btn-submit">Получить код</button>
-            </form>
-
-            <!-- Форма ввода проверочного кода (Изначально скрыта) -->
-            <form id="codeForm" style="display: none;">
-                <div class="input-group">
-                    <label style="text-align: center;">Код отправлен на вашу почту</label>
-                    <input type="text" id="verificationCode" class="code-input-field" maxlength="4" placeholder="0000" required>
-                </div>
-                
-                <button type="submit" class="btn-submit">Подтвердить вход</button>
-            </form>
-            
-            <div class="modal-footer" id="modalFooter">
-                Нет аккаунта? <a href="#" onclick="alert('Регистрация временно недоступна');">Создать аккаунт</a>
-            </div>
-        </div>
-    </div>
         /* --- СТИЛИ ДЛЯ ОКНА АВТОРИЗАЦИИ --- */
         .modal-overlay {
             position: fixed;
@@ -152,10 +83,7 @@
             transition: 0.3s ease;
         }
         
-        .modal-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
 
         .modal-window {
             background: rgba(14, 14, 20, 0.95);
@@ -170,17 +98,8 @@
             transition: 0.3s ease;
         }
 
-        .modal-overlay.active .modal-window {
-            transform: scale(1);
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 20px; right: 20px;
-            background: none; border: none;
-            color: #a1a1aa; font-size: 1.5rem;
-            cursor: pointer; transition: 0.2s;
-        }
+        .modal-overlay.active .modal-window { transform: scale(1); }
+        .modal-close { position: absolute; top: 20px; right: 20px; background: none; border: none; color: #a1a1aa; font-size: 1.5rem; cursor: pointer; transition: 0.2s; }
         .modal-close:hover { color: #fff; }
 
         .modal-window h3 {
@@ -210,12 +129,84 @@
         .modal-footer { text-align: center; margin-top: 20px; color: #71717a; font-size: 0.9rem; }
         .modal-footer a { color: #a020f0; text-decoration: none; font-weight: 500; }
         .modal-footer a:hover { text-decoration: underline; }
+
+        @media (max-width: 768px) {
+            .main-container { text-align: center; margin-top: 20%; padding: 0 20px; }
+            .info-block { margin: 0 auto; padding: 25px; }
+            .info-block h2 { font-size: 2.8rem; }
+            .btn-group { justify-content: center; }
+            .modal-window { max-width: 90%; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Шапка сайта -->
+    <header>
+        <div class="logo">SPECTER <span>1.16.5</span></div>
+        <div class="nav-right">
+            <a href="#" class="nav-link">Русский ▾</a>
+            <a href="https://t.me" target="_blank" class="nav-link">Поддержка</a>
+            <a href="#" class="nav-link">Купить</a>
+            <button class="btn-auth" id="openAuthBtn">Авторизация</button>
+        </div>
+    </header>
+
+    <!-- Главный блок -->
+    <div class="main-container">
+        <div class="info-block">
+            <h2>О нас</h2>
+            <p>Мы предоставляем вам лучший client для комфортной игры, который даст вам наилучшие впечатления от игры на любых серверах и анархиях.</p>
+            <div class="btn-group">
+                <a href="#" class="btn-buy">🛒 Купить</a>
+                <a href="#" class="btn-more">Подробнее ➔</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ОКНО АВТОРИЗАЦИИ -->
+    <div class="modal-overlay" id="authModal">
+        <div class="modal-window">
+            <button class="modal-close" id="closeAuthBtn">&times;</button>
+            <h3 id="modalTitle">Вход в аккаунт</h3>
+            
+            <!-- ШАГ 1: Ввод Почты -->
+            <form id="loginForm">
+                <div class="input-group">
+                    <label>Электронная почта (Email)</label>
+                    <input type="email" id="userEmail" placeholder="example@mail.ru" required>
+                </div>
+                
+                <div class="input-group">
+                    <label>Пароль</label>
+                    <input type="password" placeholder="••••••••" required>
+                </div>
+                
+                <button type="submit" class="btn-submit">Получить код</button>
+            </form>
+
+            <!-- ШАГ 2: Ввод проверочного кода -->
+            <form id="codeForm" style="display: none;">
+                <div class="input-group">
+                    <label style="text-align: center;">Код отправлен на вашу почту</label>
+                    <input type="text" id="verificationCode" class="code-input-field" maxlength="4" placeholder="0000" required>
+                </div>
+                
+                <button type="submit" class="btn-submit">Подтвердить вход</button>
+            </form>
+            
+            <div class="modal-footer" id="modalFooter">
+                Нет аккаунта? <a href="#" onclick="alert('Регистрация временно недоступна');">Создать аккаунт</a>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // === НАСТРОЙКА EMAILJS ===
-        // Вставь свой Public Key вместо "YOUR_PUBLIC_KEY" (из вкладки Account на EmailJS)
+        // Инициализация EmailJS
+        // Вставь свой Public Ключ вместо "YOUR_PUBLIC_KEY" (из вкладки Account на EmailJS)
         emailjs.init("YOUR_PUBLIC_KEY");
-        
-        // Вставь ID созданного шаблона вместо "YOUR_TEMPLATE_ID" (из вкладки Email Templates)
+                
+        // Вставь ID созданного шаблона вместо "YOUR_TEMPLATE_ID"
         const templateID = "YOUR_TEMPLATE_ID";
 
         const modal = document.getElementById('authModal');
@@ -229,7 +220,6 @@
         
         let generatedCode = null;
 
-        // Открытие и закрытие окна
         openBtn.addEventListener('click', () => { modal.classList.add('active'); resetForms(); });
         closeBtn.addEventListener('click', () => modal.classList.remove('active'));
         modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
@@ -241,27 +231,25 @@
             modalFooter.style.display = 'block';
         }
 
-        // Шаг 1: Отправка кода
+        // Шаг 1: Генерация кода и отправка на почту
         loginForm.addEventListener('submit', function(e) {
             e.preventDefault();
             const email = document.getElementById('userEmail').value;
             
-            // Генерируем случайный код
             generatedCode = Math.floor(1000 + Math.random() * 9000).toString();
-            console.log("Код для теста (если ключи не вписаны):", generatedCode);
+            console.log("Сгенерированный код для теста:", generatedCode);
 
             const templateParams = {
                 to_email: email,
                 code: generatedCode
             };
 
-            // Отправляем через твой Gmail (сервис service_fquam29)
-            emailjs.send('service_fquam29', templateID, templateParams)
+            emailjs.send('service_2fwycnk', templateID, templateParams)
                 .then(function() {
-                    alert('Код успешно отправлен на вашу почту!');
+                    alert('Код успешно отправлен на почту!');
                     switchToCodeStep();
                 }, function(error) {
-                    alert('Переключили на ввод кода! (Если EmailJS еще не настроен до конца, рабочий код можно подсмотреть в консоли F12)');
+                    alert('Переключили на ввод кода! (Код для теста без ключей можно подсмотреть в консоли F12)');
                     switchToCodeStep();
                 });
         });
@@ -287,3 +275,6 @@
             }
         });
     </script>
+
+</body>
+</html>
